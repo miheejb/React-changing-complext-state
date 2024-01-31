@@ -1,47 +1,40 @@
 import React, { useState } from "react";
 
 function App() {
-  const [firstName, setFirstName] = useState(" ");
-  const [lastName, setLastName] = useState(" ");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [fullName, setFullName] = useState({
+    fName: " ",
+    lName: " ",
+  });
 
-  function handleFNOnChange(event) {
-    setFirstName(event.target.value);
- 
-  }
-    function handleLNOnChange(event) {
+  function handleChange(event) {
+    const { name, value } = event.target;
 
-      setLastName(event.target.value);
-    }
-
-  function handleOnClick(event) {
-    setIsSubmitted(true);
-
-    event.preventDefault();
+    setFullName((prevValue) => {
+      if (name === "fName") {
+        return { fName: value, lName: prevValue.lName };
+      } else if (name === "lName") {
+        return { fName: prevValue.lName, lName: value };
+      }
+    });
   }
 
   return (
     <div className="container">
-      <h1>Hello {isSubmitted? firstName + " "+ lastName: null } </h1>
+      <h1>Hello {fullName.fName} {fullName.lName} </h1>
       <form>
         <input
-          onChange={handleFNOnChange}
-          value={firstName}
+          onChange={handleChange}
           name="fName"
           placeholder="First Name"
+          value={fullName.fName}
         />
         <input
-          onChange={handleLNOnChange}
-          value={lastName}
+          onChange={handleChange}
           name="lName"
           placeholder="Last Name"
+          value={fullName.lName}
         />
-        <button
-          style={{ backgroundColor: isSubmitted ? "black" : "white" }}
-          onClick={handleOnClick}
-        >
-          Submit
-        </button>
+        <button>Submit</button>
       </form>
     </div>
   );
